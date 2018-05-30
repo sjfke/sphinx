@@ -19,7 +19,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'test1'
+project = 'sphinxSandbox'
 copyright = '2018, Geoffrey Collis'
 author = 'Geoffrey Collis'
 
@@ -103,7 +103,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'test1doc'
+htmlhelp_basename = 'sphinxSandboxdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -130,7 +130,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'test1.tex', 'test1 Documentation',
+    (master_doc, 'sphinxSandbox.tex', 'sphinxSandbox Documentation',
      'Geoffrey Collis', 'manual'),
 ]
 
@@ -140,7 +140,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'test1', 'test1 Documentation',
+    (master_doc, 'sphinxSandbox', 'sphinxSandbox Documentation',
      [author], 1)
 ]
 
@@ -151,8 +151,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'test1', 'test1 Documentation',
-     author, 'test1', 'One line description of project.',
+    (master_doc, 'sphinxSandbox', 'sphinxSandbox Documentation',
+     author, 'sphinxSandbox', 'One line description of project.',
      'Miscellaneous'),
 ]
 
