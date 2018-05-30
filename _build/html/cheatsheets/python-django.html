@@ -1,0 +1,230 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Python Django Tutorial &#8212; test1  documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to test1’s documentation!" href="../index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to test1’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">test1  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-django-tutorial">
+<h1>Python Django Tutorial<a class="headerlink" href="#python-django-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installing-pipenv">
+<h2>Installing <code class="docutils literal notranslate"><span class="pre">pipenv</span></code><a class="headerlink" href="#installing-pipenv" title="Permalink to this headline">¶</a></h2>
+<p>Setup pipenv:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo pip install pipenv   # system-wide considered dangerous
+$ pip install --user pipenv # user-wide safer
+
+$ mkdir my project &amp;&amp; cd myproject
+$ pipenv install requests
+$ cat &gt; main.py &lt;&lt;EOT
+import requests
+response = requests.get(&#39;https://httpbin.org/ip&#39;)
+print(&#39;Your IP is {0}&#39;.format(response.json()[&#39;origin&#39;]))
+EOT
+
+$ pipenv run python main.py # Alternative: $ pipenv shell; python main.py
+</pre></div>
+</div>
+<p>Useful Links</p>
+<ul class="simple">
+<li><a class="reference external" href="http://docs.python-guide.org/en/latest/starting/install3/linux/">Installing Python 3 on Linux</a></li>
+<li><a class="reference external" href="http://docs.python-guide.org/en/latest/dev/virtualenvs/#virtualenvironments-ref">Pipenv &amp; Virtual Environments</a></li>
+<li><a class="reference external" href="https://docs.pipenv.org/basics/#general-recommendations-version-control">Basic Usage of Pipenv</a></li>
+<li><a class="reference external" href="https://docs.pipenv.org/">Pipenv: Python Dev Workflow for Humans</a></li>
+</ul>
+</div>
+<div class="section" id="setting-up-django-project">
+<h2>Setting up Django project<a class="headerlink" href="#setting-up-django-project" title="Permalink to this headline">¶</a></h2>
+<p>Create project directory and install Django:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ mkdir django; cd django
+$ pipenv --three # for python3
+$ pipenv install django
+$ pipenv shell
+$ python -m django --version
+</pre></div>
+</div>
+<p>Create the Django project:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ django-admin startproject mysite
+$ cd mysite
+$ python manage.py runserver      # http://127.0.0.1:8000/
+$ python manage.py runserver 8080 # http://127.0.0.1:8080/
+
+# Get rid of warning
+$ vi +/ALLOWED mysite/settings.py
+$ vi +/mystic/settings.py
+# ALLOWED_HOSTS = [&#39;127.0.0.1&#39;, &#39;192.168.1.42&#39;]
+</pre></div>
+</div>
+<p>Note on Fedora may need to open the port on the firewall:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo firewall-cmd --add-port=8000/tcp # punch firewall hole for external access
+$ python manage.py runserver 0:8080     # http://&lt;ext-ip&gt;:8000/
+</pre></div>
+</div>
+<p>Create the Django App (A Django project can have many apps):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python manage.py startapp polls
+$ cat &gt; polls/views.py &lt;&lt;EOT
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse(&quot;Hello, world. You&#39;re at the polls index.&quot;)
+EOT
+
+$ cat &gt; polls/urls.py &lt;&lt;EOT
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path(&#39;&#39;, views.index, name=&#39;index&#39;),
+]
+EOT
+
+$ cat mysite/urls.py &lt;&lt;EOT
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path(&#39;polls/&#39;, include(&#39;polls.urls&#39;)),
+    path(&#39;admin/&#39;, admin.site.urls),
+]
+EOT
+
+$ python manage.py runserver 0:8000    # http://&lt;ext-ip&gt;:8000/polls
+</pre></div>
+</div>
+</div>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.hiroom2.com/2017/07/12/fedora-26-firewalld-en/">Fedora 26: Firewall with Firewalld</a></li>
+<li><a class="reference external" href="http://www.writethedocs.org/guide/tools/sphinx/">Introduction to Sphinx</a></li>
+<li><a class="reference external" href="http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">reStructuredText Basics</a></li>
+<li><a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">Quick reStructuredText</a></li>
+<li><a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/quickstart.html">A ReStructuredText Primer</a></li>
+<li><a class="reference external" href="http://www.sphinx-doc.org/en/master/theming.html">HTML theming support</a></li>
+</ul>
+</div>
+<div class="section" id="tutorial-links">
+<h2>Tutorial Links<a class="headerlink" href="#tutorial-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro">Writing your first Django app</a></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/tutorial01/">Django 2.0 intro tutorial01</a> <em>Done</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/tutorial03/">Django 2.0 intro tutorial03</a> <em>Done</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/tutorial04/">Django 2.0 intro tutorial04</a> <em>Done</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/tutorial05/">Django 2.0 intro tutorial05</a> <em>Done</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/tutorial06/">Django 2.0 intro tutorial06</a> <em>Done</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/tutorial07/">Django 2.0 intro tutorial07</a> <em>Done</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/reusable-apps/">Advanced tutorial: How to write reusable apps</a> <em>ToDo</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/whatsnext/">What to read next</a> <em>ToDo</em></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/intro/contributing/">Writing your first patch for Django</a> <em>ToDo</em></li>
+</ul>
+</div>
+<div class="section" id="installing-databases">
+<h2>Installing Databases<a class="headerlink" href="#installing-databases" title="Permalink to this headline">¶</a></h2>
+<p>Installing sqlite:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo dnf install sqlite
+$ sqlite3 db.sqlite3
+sqlite&gt; .schema
+sqlite&gt; ^d
+</pre></div>
+</div>
+<p>Installing MariaDB:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo dnf install mariadb
+$ sudo dnf install mariadb-devel
+$ sudo dnf install mariadb-server
+$ sudo systemctl start mariadb.service
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Python Django Tutorial</a><ul>
+<li><a class="reference internal" href="#installing-pipenv">Installing <code class="docutils literal notranslate"><span class="pre">pipenv</span></code></a></li>
+<li><a class="reference internal" href="#setting-up-django-project">Setting up Django project</a></li>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#tutorial-links">Tutorial Links</a></li>
+<li><a class="reference internal" href="#installing-databases">Installing Databases</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../index.html"
+                        title="previous chapter">Welcome to test1’s documentation!</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/cheatsheets/python-django.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../index.html" title="Welcome to test1’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">test1  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Geoffrey Collis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>
